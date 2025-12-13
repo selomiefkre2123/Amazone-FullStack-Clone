@@ -23,6 +23,6 @@ export const categoryInfos = [
   {
     title: "Jewelery",
     name: "jewelery",
-    imgLink: "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.png",
+    imgLink:"https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_t.png",
   },
 ];
