@@ -10,9 +10,9 @@ import { Link } from "react-router-dom";
 const Header = () => {
 const [{ basket }, dispatch] = useContext(DataContext);
 
-  //  const totalItem = basket?.reduce((amount, item) => {
-  //  return item.amount + amount;
-  //  }, 0);
+   const totalItem = basket?.reduce((amount, item) => {
+   return item.amount + amount;
+   }, 0);
   return (
     <section className={styles.fixed}>
       <section>
@@ -77,7 +77,8 @@ const [{ basket }, dispatch] = useContext(DataContext);
             {/* Cart section */}
             <Link to="/cart" className={styles.cart}>
               <BiCart size={35} /> {/* Cart icon */}
-              <span>{basket?.length || 0}</span> {/* Item count */}
+              <span>{totalItem}</span> {/* Item count */}
+              {/* <span>{basket?.length || 0}</span> Item count */}
             </Link>
           </div>
         </div>

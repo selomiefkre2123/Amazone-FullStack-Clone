@@ -5,6 +5,9 @@ import { DataContext } from '../../Components/DataProvider/DataProvider';
 import ProductCard from "../../Components/Product/ProductCard"
 import CurrencyFormat from "../../Components/CurrencyFormat/CurrencyFormat";
 import { Link } from "react-router-dom";
+import { Type } from "../../Utility/action.type";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 
 const Cart = () => {
   const [{basket,user}, dispatch] = useContext(DataContext)
@@ -19,6 +22,23 @@ const Cart = () => {
   // },3)
   // reduce takes an array and reduces it to ONE value
   // 3 --initial value
+
+
+
+  const increment = (item) => {
+    dispatch({
+      type: Type.ADD_TO_BASKET,
+      item,
+    });
+  };
+
+  const decrement = (id) => {
+    dispatch({
+      type: Type.REMOVE_FROM_BASKET,
+      id,
+    });
+  };
+
 
   return (
     <LayOut>
@@ -39,7 +59,8 @@ const Cart = () => {
                   renderAdd={false}
                   flex={true}
                 />
-                {/* 
+
+                
                 <div className={styles.btn_container}>
                   <button
                     className={styles.btn}
@@ -54,7 +75,7 @@ const Cart = () => {
                   >
                     <IoIosArrowDown size={20} />
                   </button>
-                </div> */}
+                </div>
               </section>
             ))
           )}
