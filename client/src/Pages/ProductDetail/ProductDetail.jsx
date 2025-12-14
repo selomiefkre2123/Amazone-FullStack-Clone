@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import styles from "./productdetail.module.css";
-import Layout from "../../Components/Layout/Layout";
+import LayOut from "../../Components/LayOut/LayOut";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../../Components/Product/ProductCard";
@@ -27,13 +27,13 @@ function ProductDetail() {
   }, []);
 
   return (
-    <Layout>
+    <LayOut>
       {isLoading? (<Loader />):  (<ProductCard product ={singleProduct}
           flex={true}
           renderDesc={true}
           renderAdd={true}
         />)}
-    </Layout>
+    </LayOut>
   );
 }
 

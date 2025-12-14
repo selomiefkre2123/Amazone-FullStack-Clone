@@ -4,43 +4,43 @@ export const initialState = {
   basket: [],
 //   user: null,
 };
-export const reducer =(state,action)=>{
-  switch(action.type){
-    case Type.ADD_TO_BASKET:
-      return{
-        ...state,
-        basket:[...state.basket,action.item]
-      }
-      default:
-        return state;
-  }
-}
-
-// export const reducer = (state, action) => {
-//   switch (action.type) {
+// export const reducer =(state,action)=>{
+//   switch(action.type){
 //     case Type.ADD_TO_BASKET:
-//       //check if the item exists
-//       // const existingItem = state.basket.find(
-//       //   (item) => item.id === action.item.id
-//       // );
+//       return{
+//         ...state,
+//         basket:[...state.basket,action.item]
+//       }
+//       default:
+//         return state;
+//   }
+// }
 
-//       // if (!existingItem) {
-//       //   return {
-//       //     ...state,
-//       //     basket: [...state.basket, { ...action.item, amount: 1 }],
-//       //   };
-//       // } else {
-//       //   const updatedBasket = state.basket.map((item) => {
-//       //     return item.id === action.item.id
-//       //       ? { ...item, amount: item.amount + 1 }
-//       //       : item;
-//       //   });
+export const reducer = (state, action) => {
+  switch (action.type) {
+    case Type.ADD_TO_BASKET:
+      // check if the item exists
+      const existingItem = state.basket.find(
+        (item) => item.id === action.item.id
+      );
 
-//       //   return {
-//       //     ...state,
-//       //     basket: updatedBasket,
-//       //   };
-//       // }
+      if (!existingItem) {
+        return {
+          ...state,
+          basket: [...state.basket, { ...action.item, amount: 1 }],
+        };
+      } else {
+        const updatedBasket = state.basket.map((item) => {
+          return item.id === action.item.id
+            ? { ...item, amount: item.amount + 1 }
+            : item;
+        });
+
+        return {
+          ...state,
+          basket: updatedBasket,
+        };
+      }
 
 //     case Type.REMOVE_FROM_BASKET:
 //       const index = state.basket.findIndex((item) => item.id === action.id);
@@ -74,7 +74,7 @@ export const reducer =(state,action)=>{
 //         user: action.user,
 //       };
 
-//     default:
-//       return state;
-//   }
-// };
+    default:
+      return state;
+  }
+};
