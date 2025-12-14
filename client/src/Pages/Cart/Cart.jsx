@@ -1,10 +1,51 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import LayOut from '../../Components/LayOut/LayOut'
+import { DataContext } from '../../Components/DataProvider/DataProvider';
+import ProductCard from "../../Components/Product/ProductCard"
 
 const Cart = () => {
+  const [{basket,user}, div] = useContext(DataContext)
   return (
     <LayOut>
-      <div>Cart</div>
+      <section>
+        <div className={styles.cart_container}>
+          <h2>Hello</h2>
+          <h3>Your Shopping basket</h3>
+          <hr />
+          {basket?.length == 0 ? (
+            <p>Opps ! No item in your cart </p>
+          ) : (
+            basket?.map((item, i) => (
+              <section key={i} className={styles.cart_product}>
+                <ProductCard
+                  key={i}
+                  product={item}
+                  renderDesc={true}
+                  // renderAdd={false}
+                  flex={true}
+                />
+{/* 
+                <div className={styles.btn_container}>
+                  <button
+                    className={styles.btn}
+                    onClick={() => increment(item)}
+                  >
+                    <IoIosArrowUp size={20} />
+                  </button>
+                  <span>{item.amount}</span>
+                  <button
+                    className={styles.btn}
+                    onClick={() => decrement(item.id)}
+                  >
+                    <IoIosArrowDown size={20} />
+                  </button>
+                </div> */}
+              </section>
+            ))
+          )}
+        </div>
+        <div></div>
+      </section>
     </LayOut>
   );
 }
