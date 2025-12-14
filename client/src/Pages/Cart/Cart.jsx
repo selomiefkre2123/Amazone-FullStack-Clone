@@ -3,12 +3,25 @@ import styles from "./cart.module.css";
 import LayOut from '../../Components/LayOut/LayOut'
 import { DataContext } from '../../Components/DataProvider/DataProvider';
 import ProductCard from "../../Components/Product/ProductCard"
+import CurrencyFormat from "../../Components/CurrencyFormat/CurrencyFormat";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [{basket,user}, dispatch] = useContext(DataContext)
+  const total = basket.reduce((amount, item) => {
+    return item.price + amount;
+  },0);
+
+  // let a=[4,5,6]
+  // let result = a.reduce((pre,cur)=>{
+  //   return pre+cur
+  // },3)
+  // reduce takes an array and reduces it to ONE value
+  // 3 --initial value
+
   return (
     <LayOut>
-      <section>
+      <section className={styles.container}>
         <div className={styles.cart_container}>
           <h2>Hello</h2>
           <h3>Your Shopping basket</h3>
@@ -22,10 +35,10 @@ const Cart = () => {
                   key={i}
                   product={item}
                   renderDesc={true}
-                  // renderAdd={false}
+                  renderAdd={false}
                   flex={true}
                 />
-{/* 
+                {/* 
                 <div className={styles.btn_container}>
                   <button
                     className={styles.btn}
@@ -45,7 +58,23 @@ const Cart = () => {
             ))
           )}
         </div>
-        <div></div>
+
+        {basket?.length !== 0 && (
+          <div className={styles.subtotal}>
+            <div>
+              <p>Subtotal ({basket?.length} items)</p>
+
+              <CurrencyFormat amount={total} />
+            </div>
+
+            <span>
+              <input type="checkbox" />
+              <small>This Order contains a gift</small>
+            </span>
+
+            <Link to="/payments"> Continue to checkout</Link>
+          </div>
+        )}
       </section>
     </LayOut>
   );
