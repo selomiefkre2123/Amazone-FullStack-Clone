@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
+import styles from "./cart.module.css";
 import LayOut from '../../Components/LayOut/LayOut'
 import { DataContext } from '../../Components/DataProvider/DataProvider';
 import ProductCard from "../../Components/Product/ProductCard"
 
 const Cart = () => {
-  const [{basket,user}, div] = useContext(DataContext)
+  const [{basket,user}, dispatch] = useContext(DataContext)
   return (
     <LayOut>
       <section>
