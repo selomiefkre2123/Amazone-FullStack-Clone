@@ -1,7 +1,12 @@
 import React from 'react'
 import styles from "./signup.module.css";
 import { Link} from "react-router-dom";
+import { auth } from "../../Utility/firebase";
 const Auth = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+   const [error, setError] = useState("");
+
   return (
     <section className={styles.login}>
       {/* logo */}
@@ -17,11 +22,21 @@ const Auth = () => {
         <form action="">
           <div>
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" />
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              id="email"
+            />
           </div>
           <div>
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              id="password"
+            />
           </div>
           <button className={styles.login_signInButton}>Sign In</button>
         </form>
