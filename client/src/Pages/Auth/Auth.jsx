@@ -6,21 +6,29 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { ClipLoader } from "react-spinners";
 import { DataContext } from "../../Components/DataProvider/DataProvider";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
    const [error, setError] = useState("");
    const [{ user }, dispatch] = useContext(DataContext);
+     const [loading, setLoading] = useState({
+       signIn: false,
+       signUp: false,
+     });
    
+  const navigate = useNavigate();
+  
   const authHandler = async (e) => {
     e.preventDefault();
     console.log(e.target.name);
 
     if (e.target.name === "signin") {
       // firebase auth
-      // setLoading({ ...loading, signIn: true });
+      setLoading({ ...loading, signIn: true });
 
       signInWithEmailAndPassword(auth, email, password)
         .then((userInfo) => {
@@ -29,16 +37,16 @@ const Auth = () => {
             type: Type.SET_USER,
             user: userInfo.user,
           });
-          // setLoading({ ...loading, signIn: false });
+          setLoading({ ...loading, signIn: false });
           // navigate(navStateData?.state?.redirect || "/");
         })
         .catch((err) => {
-          // console.log(err)
-          // setError(err.message);
-          // setLoading({ ...loading, signIn: false });
+          console.log(err)
+          setError(err.message);
+          setLoading({ ...loading, signIn: false });
         });
     } else {
-      // setLoading({ ...loading, signUp: true });
+      setLoading({ ...loading, signUp: true });
       createUserWithEmailAndPassword(auth, email, password)
         .then((userInfo) => {
           console.log(userInfo)
@@ -46,13 +54,13 @@ const Auth = () => {
             type: Type.SET_USER,
             user: userInfo.user,
           });
-          // setLoading({ ...loading, signUp: false });
+          setLoading({ ...loading, signUp: false });
           // navigate(navStateData?.state?.redirect || "/");
         })
         .catch((err) => {
           console.log(userInfo);
-          // setError(err.message);
-          // setLoading({ ...loading, signUp: false });
+          setError(err.message);
+          setLoading({ ...loading, signUp: false });
         });
     }
   };
@@ -94,7 +102,11 @@ const Auth = () => {
             name="signin"
             className={styles.login_signInButton}
           >
-            Sign In
+            {loading.signIn ? (
+              <ClipLoader color="#000" size={15}></ClipLoader>
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
         {/* agreement */}
@@ -110,8 +122,15 @@ const Auth = () => {
           onClick={authHandler}
           className={styles.login_registerButton}
         >
-          Create your Amazon Account
+          {loading.signUp ? (
+            <ClipLoader color="#000" size={15}></ClipLoader>
+          ) : (
+            "  Create your Amazon Account"
+          )}
         </button>
+        {error && (
+          <small style={{ paddingTop: "5px", color: "red" }}>{error}</small>
+        )}
       </div>
     </section>
   );
