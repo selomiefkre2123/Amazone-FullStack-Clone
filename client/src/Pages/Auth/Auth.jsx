@@ -1,11 +1,61 @@
-import React from 'react'
+import React, {useState,useContext} from 'react'
 import styles from "./signup.module.css";
 import { Link} from "react-router-dom";
 import { auth } from "../../Utility/firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { DataContext } from "../../Components/DataProvider/DataProvider";
+
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
    const [error, setError] = useState("");
+   const [{ user }, dispatch] = useContext(DataContext);
+   
+  const authHandler = async (e) => {
+    e.preventDefault();
+    console.log(e.target.name);
+
+    if (e.target.name === "signin") {
+      // firebase auth
+      // setLoading({ ...loading, signIn: true });
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userInfo) => {
+          console.log(userInfo)
+          dispatch({
+            type: Type.SET_USER,
+            user: userInfo.user,
+          });
+          // setLoading({ ...loading, signIn: false });
+          // navigate(navStateData?.state?.redirect || "/");
+        })
+        .catch((err) => {
+          // console.log(err)
+          // setError(err.message);
+          // setLoading({ ...loading, signIn: false });
+        });
+    } else {
+      // setLoading({ ...loading, signUp: true });
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userInfo) => {
+          console.log(userInfo)
+          dispatch({
+            type: Type.SET_USER,
+            user: userInfo.user,
+          });
+          // setLoading({ ...loading, signUp: false });
+          // navigate(navStateData?.state?.redirect || "/");
+        })
+        .catch((err) => {
+          console.log(userInfo);
+          // setError(err.message);
+          // setLoading({ ...loading, signUp: false });
+        });
+    }
+  };
 
   return (
     <section className={styles.login}>
@@ -38,7 +88,14 @@ const Auth = () => {
               id="password"
             />
           </div>
-          <button className={styles.login_signInButton}>Sign In</button>
+          <button
+            type="submit"
+            onClick={authHandler}
+            name="signin"
+            className={styles.login_signInButton}
+          >
+            Sign In
+          </button>
         </form>
         {/* agreement */}
         <p>
@@ -47,7 +104,12 @@ const Auth = () => {
           Interest-Based Ads Notice.
         </p>
         {/* create account btn */}
-        <button className={styles.login_registerButton}>
+        <button
+          type="submit"
+          name="signUp"
+          onClick={authHandler}
+          className={styles.login_registerButton}
+        >
           Create your Amazon Account
         </button>
       </div>
