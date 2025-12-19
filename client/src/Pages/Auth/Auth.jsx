@@ -1,6 +1,6 @@
 import React, {useState,useContext} from 'react'
 import styles from "./signup.module.css";
-import { Link} from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import { auth } from "../../Utility/firebase";
 import {
   signInWithEmailAndPassword,
@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { ClipLoader } from "react-spinners";
 import { DataContext } from "../../Components/DataProvider/DataProvider";
-import { useNavigate } from "react-router-dom";
+import { Type } from '../../Utility/action.type';
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -21,12 +21,14 @@ const Auth = () => {
      });
    
   const navigate = useNavigate();
-  
+  const navStateData = useLocation();
+  // console.log(navStateData)
+
   const authHandler = async (e) => {
     e.preventDefault();
-    console.log(e.target.name);
+    // console.log(e.target.name);
 
-    if (e.target.name === "signin") {
+    if (e.target.name == "signin") {
       // firebase auth
       setLoading({ ...loading, signIn: true });
 
@@ -38,10 +40,11 @@ const Auth = () => {
             user: userInfo.user,
           });
           setLoading({ ...loading, signIn: false });
-          // navigate(navStateData?.state?.redirect || "/");
+          // navigate("/")
+          navigate(navStateData?.state?.redirect || "/");
         })
         .catch((err) => {
-          console.log(err)
+          // console.log(err)
           setError(err.message);
           setLoading({ ...loading, signIn: false });
         });
@@ -55,7 +58,8 @@ const Auth = () => {
             user: userInfo.user,
           });
           setLoading({ ...loading, signUp: false });
-          // navigate(navStateData?.state?.redirect || "/");
+          // navigate("/");
+          navigate(navStateData?.state?.redirect || "/");
         })
         .catch((err) => {
           console.log(userInfo);
@@ -77,12 +81,24 @@ const Auth = () => {
       {/* form */}
       <div className={styles.login_container}>
         <h1>Sign In</h1>
+        {navStateData?.state?.msg && (
+          <small
+            style={{
+              padding: "5px",
+              textAlign: "center",
+              color: "red",
+              fontWeight: "bold",
+            }}
+          >
+            {navStateData?.state?.msg}
+          </small>
+        )}
         <form action="">
           <div>
             <label htmlFor="email">Email</label>
             <input
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.trim())}
               type="email"
               id="email"
             />
@@ -91,7 +107,7 @@ const Auth = () => {
             <label htmlFor="password">Password</label>
             <input
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value.trim())}
               type="password"
               id="password"
             />
