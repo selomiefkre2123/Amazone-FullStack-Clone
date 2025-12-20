@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./orders.module.css";
-import Layout from "../../Components/Layout/Layout";
+import LayOut from "../../Components/LayOut/LayOut";
 import { db } from "../../Utility/firebase";
 import { DataContext } from "../../Components/DataProvider/DataProvider";
 import ProductCard from "../../Components/Product/ProductCard";
@@ -32,7 +32,7 @@ function Orders() {
   }, []);
 
   return (
-    <Layout>
+    <LayOut>
       <section className={styles.container}>
         <div className={styles.orders_container}>
           <h2>Your Orders</h2>
@@ -56,7 +56,7 @@ function Orders() {
           </div>
         </div>
       </section>
-    </Layout>
+    </LayOut>
   );
 }
 
